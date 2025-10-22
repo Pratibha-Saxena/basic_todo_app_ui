@@ -1,13 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthApi {
-  private baseUrl = 'http://localhost:8081/todo_app';
-
   constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string) {
@@ -21,13 +20,13 @@ export class AuthApi {
                     .set('Grant_Type', 'password')
     };
 
-    this.http
-        .post(`${this.baseUrl}/auth`, body.toString(), options)
-        .subscribe(response => {
-            //...
-            console.log('Login successful', response);
-            return response;
-          });
+    return this.http
+        .post(`${environment.API_BASE_URL}/auth`, body.toString(), options);
+        // .subscribe(response => {
+        //     //...
+        //     console.log('Login successful', response);
+        //     return response;
+        //   });
     // return this.http.post<any>(`${this.baseUrl}/login`, { username, password });
   }
 
@@ -45,8 +44,8 @@ export class AuthApi {
   }
 
   getWelcomeMessage() {
-    const token = this.getToken();
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(`${this.baseUrl}/welcome`, { headers, responseType: 'text' });
+    // const token = this.getToken();
+    // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${environment.API_BASE_URL}/api/welcome`, { responseType: 'text'});
   }
 }

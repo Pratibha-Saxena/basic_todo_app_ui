@@ -18,12 +18,12 @@ export class Login {
   constructor(private auth: AuthApi, private router: Router) {}
 
   login() {
-    this.auth.login(this.username, this.password);/*.subscribe({
+    this.auth.login(this.username, this.password).subscribe({
       next: (res:any) => {
         this.auth.saveToken(res.token);
         this.router.navigate(['/home']);
       },
       error: () => this.error = 'Invalid username or password'
-    });*/
+    });
   }
 }
