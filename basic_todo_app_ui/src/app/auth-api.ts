@@ -6,12 +6,29 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthApi {
-  private baseUrl = 'http://localhost:8080/api/auth';
+  private baseUrl = 'http://localhost:8081/todo_app';
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string) {
-    return this.http.post<any>(`${this.baseUrl}/login`, { username, password });
+    let body = new URLSearchParams();
+    body.set('username', username);
+    body.set('password', password);
+    let options = {
+        headers: new HttpHeaders()
+                    .set('Content-Type', 'application/x-www-form-urlencoded')
+                    .set('Accept', 'application/json')
+                    .set('Grant_Type', 'password')
+    };
+
+    this.http
+        .post(`${this.baseUrl}/auth`, body.toString(), options)
+        .subscribe(response => {
+            //...
+            console.log('Login successful', response);
+            return response;
+          });
+    // return this.http.post<any>(`${this.baseUrl}/login`, { username, password });
   }
 
   saveToken(token: string) {
